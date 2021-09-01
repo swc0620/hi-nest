@@ -1,14 +1,15 @@
-import { Controller, Get, Param, Post, Delete, Patch, Body, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Delete, Patch, Body, Query, Req, Res } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Controller('movies')
 export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {}
 
     @Get()
-    getAll(): Movie[] {
+    getAll(@Req() req, @Res() res): Movie[] {
         return this.moviesService.getAll();
     }
 
@@ -33,7 +34,7 @@ export class MoviesController {
     }
 
     @Patch('/:id')
-    patch(@Param('id') movieId: number, @Body() updateData) {
+    patch(@Param('id') movieId: number, @Body() updateData: UpdateMovieDto) {
         this.moviesService.update(movieId, updateData);
     }
 }
